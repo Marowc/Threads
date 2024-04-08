@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 
 namespace Threads
 {
@@ -6,27 +7,34 @@ namespace Threads
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Podaj wielkosc macierzy:");
-            //int size = int.Parse(Console.ReadLine());
+            int size = 1000;
+            int numOfThreads = 2;
+            int repeat = 10;
+            Matrix matrixA = new Matrix(size,7);
+            Matrix matrixB = new Matrix(size,9);
+            Matrix matrixC = new Matrix(size);
+            Matrix matrixD = new Matrix(size);
 
-            Matrix matrixA = new Matrix(3,7);
-            Matrix matrixB = new Matrix(3,9);
-            Console.WriteLine(matrixA);
-            Console.WriteLine(matrixB);
+            //Console.WriteLine(matrixA);
+            //Console.WriteLine(matrixB);
 
-            //for (int i = 2; i < 10; i++) {
-            //    Matrix matrixC = new Matrix(2, 0);
-            //    DateTime startTime = DateTime.Now;
+            DateTime startThreadTime = DateTime.Now;
+                matrixC = ThreadMatrix.Multiply(matrixA, matrixB, numOfThreads);
+                DateTime stopThreadTime = DateTime.Now;
 
-            //    matrixC.Multiply(matrixA, matrixB, i);
+                TimeSpan ThreadTime = stopThreadTime - startThreadTime;
+                Console.WriteLine("Czas pracy Threads dla n " + numOfThreads + " watkow:" + ThreadTime.TotalMilliseconds + " ms");
+                //Console.WriteLine(matrixC);
 
-            //    DateTime stopTime = DateTime.Now;
-            //    TimeSpan roznica = stopTime - startTime;
-            //    Console.WriteLine("Czas pracy dla n= :" + i + " watkow:" + roznica.TotalMilliseconds);
-            //}
-            Matrix matrixC = new Matrix(3,0);
-            matrixC.Multiply(matrixA, matrixB, 3);
-            Console.WriteLine(matrixC);
+                DateTime startParallelTime = DateTime.Now;
+                matrixD = ParallelMatrix.Multiply(matrixA, matrixB, numOfThreads);
+                DateTime stopParallelTime = DateTime.Now;
+
+                TimeSpan ParallelTime = stopParallelTime - startParallelTime;
+                Console.WriteLine("Czas pracy Parallel dla n " + numOfThreads + " watkow:" + ParallelTime.TotalMilliseconds + " ms");
+                //Console.WriteLine(matrixC);
+            
         }
     }
-}
+    }
+
